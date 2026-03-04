@@ -1,7 +1,7 @@
 # django_app/urls.py
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.http import JsonResponse
 
 
@@ -20,4 +20,5 @@ urlpatterns = [
     path('hello/', hello_name),
     # Example usage: /hello/?name=Bob
     # returns {"message": "Hello, Bob!"}
+    path("", include("django_app.adapters.api.urls")),
 ]

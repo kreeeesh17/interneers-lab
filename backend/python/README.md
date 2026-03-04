@@ -1,12 +1,33 @@
+# WEEK 1
+
+### What I built
+
+- A **GET endpoint** that returns a greeting message using a query parameter:
+  - `GET /hello-world/` → `{"message": "Hello, World!"}`
+  - `GET /hello-world/?name=Kreesh` → `{"message": "Hello, Kreesh!"}`
+- Tested the endpoint using **Postman**.
+- Verified changes locally and pushed updates to the repository.
+
+### Hexagonal architecture overview
+
+The implementation is organized into clear layers to keep business logic independent of Django:
+
+- **domain/**: Pure business logic (e.g., formatting/validating the greeting). No Django imports.
+- **application/**: Use-case layer that coordinates the feature (calls domain and returns a result).
+- **ports/**: Contract boundary for the use-case (defines what the core exposes).
+- **adapters/api/**: Django HTTP layer (views + urls) that translates HTTP requests into application calls and returns JSON.
+
+---
+
 # Interneers Lab - Backend in Python
 
 Welcome to the **Interneers Lab 2026** Python backend! This serves as a minimal starter kit for learning and experimenting with:
+
 - **Django** (Python)
 - **MongoDB** (via Docker Compose)
 - Development environment in **VSCode** (recommended)
 
 **Important:** Use the **same email** you shared during onboarding when configuring Git and related tools. That ensures consistency across all internal systems.
-
 
 ---
 
@@ -44,6 +65,7 @@ These are the essential tools you need:
    Homebrew is a popular package manager for macOS, making it easy to install and update software (like Python, Docker, etc.).
 
    **Install**:
+
    ```bash
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
    ```
@@ -55,7 +77,6 @@ These are the essential tools you need:
    This is the recommended version for the module's Python-related tasks, ensuring consistency across projects.
 
    **Install or Upgrade**:
-
    - macOS (with Homebrew): `brew install python` or use [pyenv](https://github.com/pyenv/pyenv):
      ```bash
      brew install pyenv
@@ -70,6 +91,7 @@ These are the essential tools you need:
    ```bash
    python3 --version
    ```
+
    You should see something like `Python 3.14.x`.
 
    If you are getting an older version, you can either:
@@ -92,8 +114,8 @@ These are the essential tools you need:
    - or use `python3 -m venv venv`
 
    **Verify**
-
    - Try to activate the venv using the following command:
+
      ```bash
      source venv/bin/activate         # macOS/Linux
      .\venv\Scripts\activate          # Windows
@@ -102,11 +124,12 @@ These are the essential tools you need:
    - In most machines, your terminal prompt will be prefixed with something like `(venv)`.
 
    Check which Python is being used:
-
    - macOS/Linux:
+
      ```bash
      which python
      ```
+
      This should return a path inside the `venv/` directory (e.g., `.../backend/python/venv/bin/python`)
 
    - Windows:
@@ -115,7 +138,6 @@ These are the essential tools you need:
      ```
      This should return a path inside `venv\Scripts\python.exe`.
 
-
 4. **Docker** & **Docker Compose**
 
    **Why?**
@@ -123,14 +145,12 @@ These are the essential tools you need:
    We use Docker to run MongoDB (and potentially other services) in containers, preventing "works on my machine" issues.
 
    **Install**
-
    - [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/)
    - [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/)
 
    **Verify**
 
    Verify version and successful installation with `docker --version` and `docker compose version`.
-
 
 5. **API & MongoDB Tools**
    - **[Postman](https://www.postman.com/downloads/)**, **[Insomnia](https://insomnia.rest/download)**, or **[Paw](https://paw.cloud/client) (only for mac)** for API testing
@@ -155,6 +175,7 @@ To activate the virtual environment:
 # macOS/Linux
 source venv/bin/activate
 ```
+
 ```Powershell
 # on Windows Powershell:
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
@@ -169,6 +190,7 @@ pip3 install -r requirements.txt
 ```
 
 By default, **requirements.txt** includes:
+
 - **Django** 6.0.2
 - **pymongo** 4.16.0 (MongoDB driver)
 
@@ -241,7 +263,7 @@ Confirm that all meet the minimum version requirements.
 - **Docker**
   Allows you to visualize, manage, and interact with Docker containers and images directly in VSCode.
 
-- *(Optional)* **MongoDB for VSCode**
+- _(Optional)_ **MongoDB for VSCode**
   Lets you connect to and browse your MongoDB databases, run queries, and view results without leaving VSCode.
 
 ---
@@ -303,17 +325,20 @@ source venv/bin/activate         # macOS/Linux
 ```
 
 Install dependencies (if you haven't):
+
 ```bash
 cd backend/python  # if you are not inside backend/python already.
 pip3 install -r requirements.txt
 ```
 
 Start the server on port 8001:
+
 ```bash
 python manage.py runserver 8001
 ```
 
 You should see:
+
 ```
 Starting development server at http://127.0.0.1:8001/
 ```
@@ -325,11 +350,13 @@ Install a REST client like Postman (if you haven't already).
 Create a new GET request.
 
 Enter the endpoint, for example:
+
 ```
 http://127.0.0.1:8001/hello/?name=Bob
 ```
 
 Send the request. You should see a JSON response:
+
 ```json
 {
   "message": "Hello, Bob!"
@@ -368,6 +395,7 @@ python manage.py test
 ```bash
 docker compose ps
 ```
+
 Note: This command displays the status of the containers, including whether they are running, their assigned ports, and their names, as defined in the docker-compose.yaml file. If you have set up a MongoDB server using Docker and connected it to your Django application, you can use this command to verify that the MongoDB container is running properly.
 
 ---
@@ -395,6 +423,7 @@ mongodb://root:example@localhost:27019/?authSource=admin
 To ensure flexibility across environments, use environment variables for the MongoDB connection. For example:
 
 #### Example `settings.py` (Django + pymongo):
+
 ```python
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
@@ -427,6 +456,7 @@ DATABASES = {}
 ---
 
 ## Important Note on `settings.py`
+
 - You should commit `settings.py` so the Django configuration is shared.
 - However, never commit secrets (API keys, passwords) directly. Use environment variables or `.env` files (excluded via `.gitignore`).
 
