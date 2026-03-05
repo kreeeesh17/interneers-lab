@@ -5,8 +5,6 @@
 - A **GET endpoint** that returns a greeting message using a query parameter:
   - `GET /hello-world/` → `{"message": "Hello, World!"}`
   - `GET /hello-world/?name=Kreesh` → `{"message": "Hello, Kreesh!"}`
-- Tested the endpoint using **Postman**.
-- Verified changes locally and pushed updates to the repository.
 
 ### Hexagonal architecture overview
 
