@@ -17,6 +17,206 @@ The implementation is organized into clear layers to keep business logic indepen
 
 ---
 
+# WEEK 2
+
+## What I built
+
+In Week 2, I built a **Product CRUD API** using **Django REST Framework (DRF)**.
+
+This API supports:
+
+- **Create** a product
+- **List** all products
+- **Get** one product by ID
+- **Update** a product by ID
+- **Delete** a product by ID
+
+Current endpoints:
+
+- `GET /week2/products/`
+- `POST /week2/products/`
+- `GET /week2/products/<id>/`
+- `PUT /week2/products/<id>/`
+- `DELETE /week2/products/<id>/`
+
+Important note: for Week 2, the implementation uses **in-memory storage**, so products are stored in a Python dictionary while the server is running. Data is **not persisted** to the database yet.
+
+## Quick theory: what is CRUD?
+
+CRUD stands for:
+
+- **Create**
+- **Read**
+- **Update**
+- **Delete**
+
+In this project:
+
+- `POST /week2/products/` → Create
+- `GET /week2/products/` → Read all
+- `GET /week2/products/<id>/` → Read one
+- `PUT /week2/products/<id>/` → Update
+- `DELETE /week2/products/<id>/` → Delete
+
+---
+
+## Quick theory: HTTP verbs used
+
+### GET
+
+Used to fetch data.
+
+Examples:
+
+- `GET /week2/products/`
+- `GET /week2/products/1/`
+
+### POST
+
+Used to create new data.
+
+Example:
+
+- `POST /week2/products/`
+
+### PUT
+
+Used to update existing data fully.
+
+Example:
+
+- `PUT /week2/products/1/`
+
+### DELETE
+
+Used to remove data.
+
+Example:
+
+- `DELETE /week2/products/1/`
+
+---
+
+## Week 2 architecture overview
+
+The Week 2 implementation is split into small layers so each file has one responsibility.
+
+### `models.py`
+
+Defines the `Product` object structure.
+
+This is a **plain Python class**, not a Django ORM model in this week’s version.
+
+Responsibilities:
+
+- define product fields
+- hold product data
+- convert object into dictionary using `to_dict()`
+
+### `store.py`
+
+Acts as a **temporary in-memory database**.
+
+Responsibilities:
+
+- store products in a dictionary
+- generate product IDs
+- create/get/list/update/delete products
+
+### `serializers.py`
+
+Handles validation and API data structure.
+
+Responsibilities:
+
+- validate incoming request data
+- convert incoming data into cleaned Python data
+- define the API shape for Product
+
+### `views.py`
+
+Handles HTTP requests and responses.
+
+Responsibilities:
+
+- receive request
+- call serializer
+- call store
+- return DRF `Response`
+
+### `urls.py`
+
+Connects API endpoints to views.
+
+### `django_app/urls.py`
+
+Includes `week2.urls` under `/week2/`.
+
+---
+
+## Architecture flow
+
+````text
+Client (Browser / Postman / Frontend)
+        ↓
+HTTP Request
+        ↓
+request.data = {
+  "name": "Wireless Mouse",
+  "description": "2.4 GHz ergonomic mouse",
+  "category": "Electronics",
+  "price": "799.00",
+  "brand": "Logitech",
+  "quantity": 25
+}
+        ↓
+django_app/urls.py
+        ↓
+week2/urls.py
+        ↓
+views.py
+        ↓
+serializers.py
+        ↓
+serializer.validated_data = {
+  "name": "Wireless Mouse",
+  "description": "2.4 GHz ergonomic mouse",
+  "category": "Electronics",
+  "price": Decimal("799.00"),
+  "brand": "Logitech",
+  "quantity": 25
+}
+        ↓
+store.py
+        ↓
+Product(
+  id=1,
+  name="Wireless Mouse",
+  description="2.4 GHz ergonomic mouse",
+  category="Electronics",
+  price=Decimal("799.00"),
+  brand="Logitech",
+  quantity=25
+)
+        ↓
+to_dict()
+↓
+{
+  "id": 1,
+  "name": "Wireless Mouse",
+  "description": "2.4 GHz ergonomic mouse",
+  "category": "Electronics",
+  "price": "799.00",
+  "brand": "Logitech",
+  "quantity": 25
+}
+        ↓
+serializer.data / Response(...)
+        ↓
+JSON Response back to client
+
+---
+
 # Interneers Lab - Backend in Python
 
 Welcome to the **Interneers Lab 2026** Python backend! This serves as a minimal starter kit for learning and experimenting with:
@@ -66,7 +266,7 @@ These are the essential tools you need:
 
    ```bash
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-   ```
+````
 
 2. **Python 3.14** (3.12 or higher required)
 
