@@ -156,63 +156,62 @@ Includes `week2.urls` under `/week2/`.
 
 ## Architecture flow
 
-````text
 Client (Browser / Postman / Frontend)
-        ↓
+↓
 HTTP Request
-        ↓
+↓
 request.data = {
-  "name": "Wireless Mouse",
-  "description": "2.4 GHz ergonomic mouse",
-  "category": "Electronics",
-  "price": "799.00",
-  "brand": "Logitech",
-  "quantity": 25
+"name": "Wireless Mouse",
+"description": "2.4 GHz ergonomic mouse",
+"category": "Electronics",
+"price": "799.00",
+"brand": "Logitech",
+"quantity": 25
 }
-        ↓
+↓
 django_app/urls.py
-        ↓
+↓
 week2/urls.py
-        ↓
+↓
 views.py
-        ↓
+↓
 serializers.py
-        ↓
+↓
 serializer.validated_data = {
-  "name": "Wireless Mouse",
-  "description": "2.4 GHz ergonomic mouse",
-  "category": "Electronics",
-  "price": Decimal("799.00"),
-  "brand": "Logitech",
-  "quantity": 25
+"name": "Wireless Mouse",
+"description": "2.4 GHz ergonomic mouse",
+"category": "Electronics",
+"price": Decimal("799.00"),
+"brand": "Logitech",
+"quantity": 25
 }
-        ↓
+↓
 store.py
-        ↓
+↓
 Product(
-  id=1,
-  name="Wireless Mouse",
-  description="2.4 GHz ergonomic mouse",
-  category="Electronics",
-  price=Decimal("799.00"),
-  brand="Logitech",
-  quantity=25
+id=1,
+name="Wireless Mouse",
+description="2.4 GHz ergonomic mouse",
+category="Electronics",
+price=Decimal("799.00"),
+brand="Logitech",
+quantity=25
 )
-        ↓
+↓
 to_dict()
 ↓
 {
-  "id": 1,
-  "name": "Wireless Mouse",
-  "description": "2.4 GHz ergonomic mouse",
-  "category": "Electronics",
-  "price": "799.00",
-  "brand": "Logitech",
-  "quantity": 25
+"id": 1,
+"name": "Wireless Mouse",
+"description": "2.4 GHz ergonomic mouse",
+"category": "Electronics",
+"price": "799.00",
+"brand": "Logitech",
+"quantity": 25
 }
-        ↓
+↓
 serializer.data / Response(...)
-        ↓
+↓
 JSON Response back to client
 
 ---
@@ -266,6 +265,8 @@ These are the essential tools you need:
 
    ```bash
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
 ````
 
 2. **Python 3.14** (3.12 or higher required)
@@ -683,3 +684,4 @@ docker compose down                          # Stop MongoDB
 docker compose ps                            # List running containers
 docker compose logs -f                       # View logs
 ```
+````
