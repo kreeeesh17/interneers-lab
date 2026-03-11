@@ -2,9 +2,10 @@
 
 ### What I built
 
-- A **GET endpoint** that returns a greeting message using a query parameter:
-  - `GET /hello-world/` → `{"message": "Hello, World!"}`
-  - `GET /hello-world/?name=Kreesh` → `{"message": "Hello, Kreesh!"}`
+A **GET endpoint** that returns a greeting message using a query parameter:
+
+- `GET /hello-world/` → `{"message": "Hello, World!"}`
+- `GET /hello-world/?name=Kreesh` → `{"message": "Hello, Kreesh!"}`
 
 ### Hexagonal architecture overview
 
