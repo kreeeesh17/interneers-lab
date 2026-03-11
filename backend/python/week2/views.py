@@ -18,6 +18,7 @@ class ProductListCreateAPIView(APIView):
         # output serialisation
         # without many = true DRF would expect one product
         serializer = ProductSerializer(product_data, many=True)
+        # Response(product_data, status=status.HTTP_200_OK) is also valid
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # create a product
