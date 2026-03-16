@@ -20,7 +20,7 @@ The implementation is organized into clear layers to keep business logic indepen
 
 # WEEK 2
 
-## What I built
+### What I built
 
 In Week 2, I built a **Product CRUD API** using **Django REST Framework (DRF)**.
 
