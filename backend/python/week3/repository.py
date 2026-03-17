@@ -16,6 +16,8 @@ class ProductRepository:
             quantity=data["quantity"],
             updated_at=datetime.utcnow(),
         )
+        # tells mongoengine to persist this document in mongodb
+        # so mongoengine looks at the model, sees meta = {"" : ""} connects through default mongodb connection and inserts an new doc into the product collection
         product.save()
         return product
 
