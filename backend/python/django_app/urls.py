@@ -22,4 +22,5 @@ urlpatterns = [
     # returns {"message": "Hello, Bob!"}
     path("", include("django_app.adapters.api.urls")),
     path("week2/", include("week2.urls")),
+    path("api/week3/", include("week3.urls")),
 ]

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "week2",
+    "week3.apps.Week3Config",
 ]
 
 MIDDLEWARE = [
