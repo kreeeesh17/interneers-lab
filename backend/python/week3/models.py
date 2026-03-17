@@ -3,6 +3,7 @@ from mongoengine import Document, SequenceField, StringField, DecimalField, IntF
 
 
 class Product(Document):
+    # seq field is used for auto incrementing numeric id's
     id = SequenceField(primary_key=True)
     name = StringField(required=True, max_length=200)
     description = StringField(required=True)
@@ -13,6 +14,7 @@ class Product(Document):
     created_at = DateTimeField(default=datetime.utcnow)
     updated_at = DateTimeField(default=datetime.utcnow)
 
+    # you are telling MongoEngine to put all Product objects inside the products folder/bucket
     meta = {
         "collection": "products"
     }
