@@ -1,3 +1,5 @@
+# bridge between django file and mongoDB
+
 import os
 from dotenv import load_dotenv
 from mongoengine import connect
