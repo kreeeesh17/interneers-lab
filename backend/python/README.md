@@ -61,43 +61,6 @@ In this project:
 
 ---
 
-## Quick theory: HTTP verbs used
-
-### GET
-
-Used to fetch data.
-
-Examples:
-
-- `GET /week2/products/`
-- `GET /week2/products/1/`
-
-### POST
-
-Used to create new data.
-
-Example:
-
-- `POST /week2/products/`
-
-### PUT
-
-Used to update existing data fully.
-
-Example:
-
-- `PUT /week2/products/1/`
-
-### DELETE
-
-Used to remove data.
-
-Example:
-
-- `DELETE /week2/products/1/`
-
----
-
 ## Week 2 architecture overview
 
 The Week 2 implementation is split into small layers so each file has one responsibility.
