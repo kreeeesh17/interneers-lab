@@ -267,82 +267,70 @@ JSON Response back to client
 
 ---
 
-### Flow 2 — Technology Relationship Flow
+### Flow 2 — Docker Compose Flow
 
 ```text
-Client
+docker compose up -d
         ↓
-Django / DRF
+Read compose.yml
         ↓
-View Layer
+Find services:
+  - app
+  - db
         ↓
-Service Layer
+Create default network
         ↓
-Repository Layer
+Create db volume
         ↓
-MongoEngine
+Pull postgres image
         ↓
-PyMongo
+Build app image from Dockerfile
         ↓
-MongoDB Server
+Create db container
         ↓
-MongoDB Compass
+Start db container
+        ↓
+Create app container
+        ↓
+Start app container
+        ↓
+app talks to db using service name: db
+        ↓
+Both keep running in background
 ```
 
 ---
 
-### Flow 3 — Example Product Creation Flow
+## Flow 3 — Django Server Startup Flow
 
 ```text
-Client (Postman / Frontend)
+python manage.py runserver
         ↓
-HTTP POST /week3/products/
+manage.py sets DJANGO_SETTINGS_MODULE
         ↓
-request.data = {
-  "name": "Printer",
-  "description": "B/W printer",
-  "category": "Electronics",
-  "price": "8000.00",
-  "brand": "HP",
-  "quantity": 6
-}
+django.core.management executes the runserver command
         ↓
-django_app/urls.py → week3/urls.py → views.py
+Django imports settings.py
         ↓
-serializers.py
+App configuration is loaded
         ↓
-serializer.validated_data = {
-  "name": "Printer",
-  "description": "B/W printer",
-  "category": "Electronics",
-  "price": Decimal("8000.00"),
-  "brand": "HP",
-  "quantity": 6
-}
+A MongoDB setup module / connection block is imported
         ↓
-services.py → repository.py
+mongoengine.connect(...)
         ↓
-product.save()
+Connection is established to the MongoDB container/server
         ↓
-Stored in MongoDB
+MongoEngine Document models become usable
         ↓
-{
-  "_id": ObjectId("..."),
-  "name": "Printer",
-  ...
-}
+Repository layer can now perform DB operations
         ↓
-JSON Response back to client
+Service layer can call repository methods
         ↓
-{
-  "id": "<mongo_object_id>",
-  "name": "Printer",
-  "description": "B/W printer",
-  "category": "Electronics",
-  "price": "8000.00",
-  "brand": "HP",
-  "quantity": 6
-}
+View layer can safely handle API requests
+        ↓
+Server startup completes
+        ↓
+Application is ready for Product CRUD with MongoDB persistence
 ```
 
 ---
