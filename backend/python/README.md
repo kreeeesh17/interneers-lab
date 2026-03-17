@@ -219,6 +219,152 @@ JSON Response back to client
 
 ---
 
+# Week 3
+
+## What I Built
+
+In Week 3, I refactored the Week 2 in-memory Product CRUD API into a more structured backend architecture using a thin controller layer, service layer, repository layer, MongoDB for persistent storage, and MongoEngine for model-based database interaction.
+
+Unlike Week 2, where products were stored only in memory, this version stores product data in MongoDB, so data persists even after restarting the server.
+
+---
+
+## Architecture Flows
+
+### Flow 1 — Request Handling Flow
+
+```text
+Client (Browser / Postman / Frontend)
+        ↓
+HTTP Request
+        ↓
+django_app/urls.py
+        ↓
+week3/urls.py
+        ↓
+views.py
+        ↓
+serializers.py
+        ↓
+services.py
+        ↓
+repository.py
+        ↓
+models.py
+        ↓
+MongoDB
+        ↓
+repository.py
+        ↓
+services.py
+        ↓
+views.py
+        ↓
+DRF Response
+        ↓
+JSON Response back to client
+```
+
+---
+
+### Flow 2 — Technology Relationship Flow
+
+```text
+Client
+        ↓
+Django / DRF
+        ↓
+View Layer
+        ↓
+Service Layer
+        ↓
+Repository Layer
+        ↓
+MongoEngine
+        ↓
+PyMongo
+        ↓
+MongoDB Server
+        ↓
+MongoDB Compass
+```
+
+---
+
+### Flow 3 — Example Product Creation Flow
+
+```text
+Client (Postman / Frontend)
+        ↓
+HTTP POST /week3/products/
+        ↓
+request.data = {
+  "name": "Printer",
+  "description": "B/W printer",
+  "category": "Electronics",
+  "price": "8000.00",
+  "brand": "HP",
+  "quantity": 6
+}
+        ↓
+django_app/urls.py → week3/urls.py → views.py
+        ↓
+serializers.py
+        ↓
+serializer.validated_data = {
+  "name": "Printer",
+  "description": "B/W printer",
+  "category": "Electronics",
+  "price": Decimal("8000.00"),
+  "brand": "HP",
+  "quantity": 6
+}
+        ↓
+services.py → repository.py
+        ↓
+product.save()
+        ↓
+Stored in MongoDB
+        ↓
+{
+  "_id": ObjectId("..."),
+  "name": "Printer",
+  ...
+}
+        ↓
+JSON Response back to client
+        ↓
+{
+  "id": "<mongo_object_id>",
+  "name": "Printer",
+  "description": "B/W printer",
+  "category": "Electronics",
+  "price": "8000.00",
+  "brand": "HP",
+  "quantity": 6
+}
+```
+
+---
+
+## Example Endpoints
+
+| Method        | Endpoint                | Description        |
+| ------------- | ----------------------- | ------------------ |
+| `POST`        | `/week3/products/`      | Create product     |
+| `GET`         | `/week3/products/`      | Fetch all products |
+| `GET`         | `/week3/products/<id>/` | Fetch one product  |
+| `PUT`/`PATCH` | `/week3/products/<id>/` | Update product     |
+| `DELETE`      | `/week3/products/<id>/` | Delete product     |
+
+---
+
+## Final Takeaway
+
+Week 3 was about moving from a basic CRUD project to a realistic, layered backend architecture — separating responsibilities into view, service, repository, and model layers, keeping controllers thin, and using MongoDB for real persistence.
+
+---
+
 # Interneers Lab - Backend in Python
 
 Welcome to the **Interneers Lab 2026** Python backend! This serves as a minimal starter kit for learning and experimenting with:
