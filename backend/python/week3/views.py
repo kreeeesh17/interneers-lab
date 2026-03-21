@@ -55,8 +55,8 @@ class ProductDetailAPIView(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # delete product
-    def delete(self, request, product_id):
-        deleted = product_service.delete(product_id)
+    def delete(self, request, id):
+        deleted = product_service.delete(id)
         if not deleted:
             return Response({"error": "Product not found."}, status=status.HTTP_404_NOT_FOUND)
         else:
