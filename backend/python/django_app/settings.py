@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "week2",
     "week3.apps.Week3Config",
+    "django_filters",
 ]
 
 MIDDLEWARE = [

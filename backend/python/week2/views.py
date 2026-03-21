@@ -12,16 +12,64 @@ class ProductListCreateAPIView(APIView):
     # list all product
     def get(self, request):
         products = product_store.list_all()
+        # manual pagination
+        page = request.query_params.get("page", "1")
+        page_size = request.query_params.get("page_size", "5")
+        if not page.isdigit() or not page_size.isdigit():
+            return Response(
+                {"error": "page and page_size must be integers"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        page = int(page)
+        page_size = int(page_size)
+        if page <= 0 or page_size <= 0:
+            return Response(
+                {"error": "page and page_size must be greater than 0"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        total_items = len(products)
+        start = (page-1)*page_size
+        end = start + page_size
+        paginated_products = products[start: end]
         product_data = []
-        for product in products:
+
+        for product in paginated_products:
             product_data.append(product.to_dict())
-        # output serialisation
-        # without many = true DRF would expect one product
+
         serializer = ProductSerializer(product_data, many=True)
-        # Response(product_data, status=status.HTTP_200_OK) is also valid
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        if end < total_items:
+            next_page = page + 1
+        else:
+            next_page = None
+
+        if page > 1:
+            previous_page = page-1
+        else:
+            previous_page = None
+
+        return Response(
+            {
+                "count": total_items,
+                "page": page,
+                "page_size": page_size,
+                "next_page": next_page,
+                "previous_page": previous_page,
+                "results": serializer.data,
+            }, status=status.HTTP_200_OK
+        )
+
+        # product_data = []
+        # for product in products:
+        #     product_data.append(product.to_dict())
+        # # output serialisation
+        # # without many = true DRF would expect one product
+        # serializer = ProductSerializer(product_data, many=True)
+        # # Response(product_data, status=status.HTTP_200_OK) is also valid
+        # return Response(serializer.data, status=status.HTTP_200_OK)
 
     # create a product
+
     def post(self, request):
         # input serialisation
         serializer = ProductSerializer(data=request.data)
