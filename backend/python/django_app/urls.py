@@ -23,4 +23,6 @@ urlpatterns = [
     path("", include("django_app.adapters.api.urls")),
     path("week2/", include("week2.urls")),
     path("week3/", include("week3.urls")),
+    path("week4/", include("week4.urls")),
+
 ]
