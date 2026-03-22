@@ -15,7 +15,7 @@ class ProductCategory(Document):
 
     # just like week3 this tells mongoengine which mongodb collection name to use
     meta = {
-        "collection": "product_categories"
+        "collection": "week4_product_categories"
     }
 
     def to_dict(self):
@@ -46,7 +46,7 @@ class Product(Document):
     updated_at = DateTimeField(default=datetime.utcnow)
 
     meta = {
-        "collection": "products"
+        "collection": "week4_products"
     }
 
     def to_dict(self):
