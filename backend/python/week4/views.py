@@ -313,18 +313,22 @@ class RemoveProductFromCategoryAPIView(APIView):
 
 # upload csv and create many products
 class BulkProductUploadAPIView(APIView):
+    # normally DRF expects JSON bodies but it is not coming in form of JSON so we need to parse it
     parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request):
+        # get uploaded file first
         uploaded_file = request.FILES.get("file")
         if not uploaded_file:
-            return Response({"error": "CSV file is required with key 'file'."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "CSV file is required with key 'file'"}, status=status.HTTP_400_BAD_REQUEST)
 
+        # send file to service layer
         result = product_service.create_from_csv(uploaded_file)
 
         if isinstance(result, dict) and "error" in result:
             return Response(result, status=status.HTTP_400_BAD_REQUEST)
 
+        # if service did not return error prepare dict to upload
         product_data = []
         for product in result:
             product_data.append(product.to_dict())
