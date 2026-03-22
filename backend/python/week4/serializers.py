@@ -6,7 +6,7 @@ class ProductCategorySerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField(max_length=100)
     description = serializers.CharField(
-        requiered=False, allow_blank=True, default="", max_length=300)
+        required=False, allow_blank=True, default="", max_length=300)
     # output fields only
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
