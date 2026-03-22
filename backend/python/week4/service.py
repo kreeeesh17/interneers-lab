@@ -188,10 +188,13 @@ class ProductService:
             if not description:
                 return {"error": f"Row {row_number}: description cannot be empty"}
 
+            if not brand:
+                # brand is compulsary now
+                return {"error": f"Row {row_number}: brand is required"}
+
             try:
-                # converting string to numbers
                 price = float(price)
-            except:
+            except ValueError:
                 return {"error": f"Row {row_number}: invalid price"}
 
             if price <= 0:
