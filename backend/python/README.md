@@ -433,6 +433,15 @@ python -m week4.migrate_old_products
 
 ---
 
+## 8. Bulk CSV Upload via Postman
+
+1. **Prepare CSV** — Create a `.csv` file with columns: `name, description, price, brand, quantity, category_id`. Leave `category_id` blank to assign to _Miscellaneous_.
+2. **Set request** — Method: `POST`, URL: `http://127.0.0.1:8000/week4/products/bulk-upload/`
+3. **Set body** — Go to `Body → form-data`, add a key named `file`, change type to `File`, and select your CSV.
+4. **Send** — Click Send. All rows are validated before any product is created.
+
+---
+
 # Interneers Lab - Backend in Python
 
 Welcome to the **Interneers Lab 2026** Python backend! This serves as a minimal starter kit for learning and experimenting with:
