@@ -441,26 +441,7 @@ On every Django server startup, the app automatically seeds and migrates the dat
 - Assigns `Miscellaneous` to products with a missing category
 - Assigns `"Unknown"` to products with a missing or blank brand
 
-This runs automatically — no manual step needed. The process is **idempotent**: already-fixed records are never modified again.
-
-### Startup output example
-
-```
-Startup seed/migration summary
-Categories created      : 1
-Products checked        : 12
-Products updated        : 4
-Category fixes applied  : 4
-Brand fixes applied     : 2
-```
-
-### Files involved
-
-| File               | Purpose                              |
-| ------------------ | ------------------------------------ |
-| `apps.py`          | Triggers startup logic via `ready()` |
-| `seed.py`          | Contains seeding and migration logic |
-| `db_connection.py` | Handles MongoDB connection           |
+This runs automatically — no manual step needed. The process is idempotent: already-fixed records are never modified again.
 
 ---
 
