@@ -300,13 +300,13 @@ Application is ready for Product CRUD with MongoDB persistence
 
 ## Example Endpoints
 
-| Method        | Endpoint                | Description        |
-| ------------- | ----------------------- | ------------------ |
-| `POST`        | `/week3/products/`      | Create product     |
-| `GET`         | `/week3/products/`      | Fetch all products |
-| `GET`         | `/week3/products/<id>/` | Fetch one product  |
-| `PUT`/`PATCH` | `/week3/products/<id>/` | Update product     |
-| `DELETE`      | `/week3/products/<id>/` | Delete product     |
+| Method   | Endpoint                | Description        |
+| -------- | ----------------------- | ------------------ |
+| `POST`   | `/week3/products/`      | Create product     |
+| `GET`    | `/week3/products/`      | Fetch all products |
+| `GET`    | `/week3/products/<id>/` | Fetch one product  |
+| `PUT`    | `/week3/products/<id>/` | Update product     |
+| `DELETE` | `/week3/products/<id>/` | Delete product     |
 
 ---
 
