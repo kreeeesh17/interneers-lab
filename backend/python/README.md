@@ -398,7 +398,7 @@ Week 3 was about moving from a basic CRUD project to a realistic, layered backen
 
 ---
 
-## 7. Legacy Product Migration
+## 7. Old Product Migration
 
 A one-time migration script is included to update older product records created before category and strict brand handling were introduced.
 
@@ -406,8 +406,8 @@ The script does the following:
 
 - Connects to MongoDB
 - Checks whether the default category `Miscellaneous` exists, and creates it if needed
-- Finds legacy products with missing category
-- Finds legacy products with missing or blank brand
+- Finds old products with missing category
+- Finds old products with missing or blank brand
 - Updates only the affected records
 - Prints a summary of how many products were checked and fixed
 
@@ -433,7 +433,38 @@ python -m week4.migrate_old_products
 
 ---
 
-## 8. Bulk CSV Upload via Postman
+## 8. Startup Seeding & Auto Migration
+
+On every Django server startup, the app automatically seeds and migrates the database via `AppConfig.ready()`:
+
+- Ensures the default category **Miscellaneous** exists
+- Assigns `Miscellaneous` to products with a missing category
+- Assigns `"Unknown"` to products with a missing or blank brand
+
+This runs automatically — no manual step needed. The process is **idempotent**: already-fixed records are never modified again.
+
+### Startup output example
+
+```
+Startup seed/migration summary
+Categories created      : 1
+Products checked        : 12
+Products updated        : 4
+Category fixes applied  : 4
+Brand fixes applied     : 2
+```
+
+### Files involved
+
+| File               | Purpose                              |
+| ------------------ | ------------------------------------ |
+| `apps.py`          | Triggers startup logic via `ready()` |
+| `seed.py`          | Contains seeding and migration logic |
+| `db_connection.py` | Handles MongoDB connection           |
+
+---
+
+## 9. Bulk CSV Upload via Postman
 
 1. **Prepare CSV** — Create a `.csv` file with columns: `name, description, price, brand, quantity, category_id`. Leave `category_id` blank to assign to _Miscellaneous_.
 2. **Set request** — Method: `POST`, URL: `http://127.0.0.1:8000/week4/products/bulk-upload/`
