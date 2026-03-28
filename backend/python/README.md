@@ -316,6 +316,123 @@ Week 3 was about moving from a basic CRUD project to a realistic, layered backen
 
 ---
 
+# Week 4
+
+## API Reference
+
+---
+
+## 1. Product APIs
+
+| Method | URL                     | Description            |
+| ------ | ----------------------- | ---------------------- |
+| GET    | `/week4/products/`      | List all products      |
+| POST   | `/week4/products/`      | Create a new product   |
+| GET    | `/week4/products/<id>/` | Get a product by ID    |
+| PUT    | `/week4/products/<id>/` | Update a product by ID |
+| DELETE | `/week4/products/<id>/` | Delete a product by ID |
+
+---
+
+## 2. Category APIs
+
+| Method | URL                       | Description             |
+| ------ | ------------------------- | ----------------------- |
+| GET    | `/week4/categories/`      | List all categories     |
+| POST   | `/week4/categories/`      | Create a new category   |
+| GET    | `/week4/categories/<id>/` | Get a category by ID    |
+| PUT    | `/week4/categories/<id>/` | Update a category by ID |
+| DELETE | `/week4/categories/<id>/` | Delete a category by ID |
+
+---
+
+## 3. Category–Product Relation APIs
+
+| Method | URL                                      | Description                      |
+| ------ | ---------------------------------------- | -------------------------------- |
+| GET    | `/week4/categories/<id>/products/`       | List all products in a category  |
+| POST   | `/week4/categories/<id>/add-product/`    | Add a product to a category      |
+| POST   | `/week4/categories/<id>/remove-product/` | Remove a product from a category |
+
+---
+
+## 4. Bulk Upload
+
+| Method | URL                            | Description                              |
+| ------ | ------------------------------ | ---------------------------------------- |
+| POST   | `/week4/products/bulk-upload/` | Upload a CSV to create multiple products |
+
+---
+
+## 5. Filtering, Sorting & Pagination
+
+### Products — `/week4/products/`
+
+| Param                           | Example                               | Description                 |
+| ------------------------------- | ------------------------------------- | --------------------------- |
+| `name`                          | `?name=rice`                          | Filter by name              |
+| `brand`                         | `?brand=dove`                         | Filter by brand             |
+| `min_price` / `max_price`       | `?min_price=20&max_price=200`         | Filter by price range       |
+| `min_quantity` / `max_quantity` | `?min_quantity=5&max_quantity=50`     | Filter by quantity range    |
+| `category_id`                   | `?category_id=1`                      | Filter by category          |
+| `sort_by`                       | `?sort_by=price` or `?sort_by=-price` | Sort ascending / descending |
+| `page` / `page_size`            | `?page=1&page_size=5`                 | Paginate results            |
+
+### Categories — `/week4/categories/`
+
+| Param                | Example                | Description                 |
+| -------------------- | ---------------------- | --------------------------- |
+| `title`              | `?title=food`          | Filter by title             |
+| `sort_by`            | `?sort_by=-created_at` | Sort ascending / descending |
+| `page` / `page_size` | `?page=1&page_size=5`  | Paginate results            |
+
+---
+
+## 6. Key Business Rules
+
+- `brand` is **required** for all product operations
+- Products without a `category_id` are assigned to **Miscellaneous**
+- Category **titles must be unique**
+- A category **cannot be deleted** if products are assigned to it
+- CSV bulk upload **validates all rows** before creating any product
+
+---
+
+## 7. Legacy Product Migration
+
+A one-time migration script is included to update older product records created before category and strict brand handling were introduced.
+
+The script does the following:
+
+- Connects to MongoDB
+- Checks whether the default category `Miscellaneous` exists, and creates it if needed
+- Finds legacy products with missing category
+- Finds legacy products with missing or blank brand
+- Updates only the affected records
+- Prints a summary of how many products were checked and fixed
+
+### How to run
+
+Start the services first:
+
+```bash
+docker compose up -d
+```
+
+Then run the migration script:
+
+```bash
+python -m week4.migrate_old_products
+```
+
+### Notes
+
+- This is a manual one-time migration script.
+- It is mainly intended for old records created before the Week 4 category changes.
+- Running it again is safe because already fixed products will not be modified again.
+
+---
+
 # Interneers Lab - Backend in Python
 
 Welcome to the **Interneers Lab 2026** Python backend! This serves as a minimal starter kit for learning and experimenting with:
