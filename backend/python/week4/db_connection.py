@@ -12,6 +12,7 @@ def initialize_mongo():
     mongo_port = os.getenv("MONGO_PORT", "27019")
     mongo_db = os.getenv("MONGO_DB", "interneers_lab_week4")
 
+    # mongodb://root:example@localhost:27019/interneers_lab_week4?authSource=admin
     mongo_uri = (
         f"mongodb://{mongo_user}:{mongo_pass}"
         f"@{mongo_host}:{mongo_port}/{mongo_db}?authSource=admin"
