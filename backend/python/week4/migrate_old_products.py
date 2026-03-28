@@ -7,6 +7,7 @@ DEFAULT_CATEGORY_DESCRIPTION = "Default category for uncategorized products"
 DEFAULT_BRAND = "Unknown"
 
 
+# creating default category
 def create_default_category():
     category = ProductCategory.objects(
         title__iexact=DEFAULT_CATEGORY_TITLE).first()
