@@ -32,7 +32,7 @@ def fetch_products(selected_category_id=None):
             "ID": product.id,
             "Name": product.name,
             "Description": product.description,
-            "Price": product.price,
+            "Price": float(product.price),
             "Brand": product.brand,
             "Quantity": product.quantity,
             "Category": product.category.title if product.category else "No Category"
@@ -72,19 +72,13 @@ def inventory_table(category_id):
 # showing stock alert
 @st.fragment
 def stock_alert(df):
-
-
-def stock_alert(df):
     st.subheader("Stock Alert")
-
     if not df.empty:
-        low_stock_rows = []
-
+        low_stock_row = []
         for index, row in df.iterrows():
             if row["Quantity"] < 5:
-                low_stock_rows.append(row)
-
-        low_stock_df = pd.DataFrame(low_stock_rows)
+                low_stock_row.append(row)
+        low_stock_df = pd.DataFrame(low_stock_row)
 
         if not low_stock_df.empty:
             st.error("Some products are running low in stock")
@@ -146,11 +140,11 @@ def remove_product():
     if product_options:
         selected_product_label = st.selectbox(
             "Select Product to remove", list(product_options.keys()))
-    if st.button("Remove Product"):
-        selected_product_id = product_options[selected_product_label]
-        Product.objects(id=selected_product_id).delete()
-        st.success("Product removed successfully")
-        st.rerun()
+        if st.button("Remove Product"):
+            selected_product_id = product_options[selected_product_label]
+            Product.objects(id=selected_product_id).delete()
+            st.success("Product removed successfully")
+            st.rerun()
     else:
         st.info("No products found")
 
