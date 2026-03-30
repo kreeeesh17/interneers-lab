@@ -454,6 +454,27 @@ This runs automatically — no manual step needed. The process is idempotent: al
 
 ---
 
+# Week 5 - Interactive Data Tools
+
+## Overview
+
+This week focuses on building a Streamlit dashboard and using Jupyter Notebook for data exploration.
+
+## Features
+
+- Display inventory in a table format using Streamlit
+- Add and remove products directly from UI
+- Sidebar filter by product category
+- Stock alert for low-quantity items
+- Jupyter Notebook for MongoEngine queries and data visualization
+
+## Files
+
+- `dashboard.py` → Streamlit inventory dashboard
+- `notebook/week5_inventory_analysis.ipynb` → Data analysis and visualization
+
+---
+
 # Interneers Lab - Backend in Python
 
 Welcome to the **Interneers Lab 2026** Python backend! This serves as a minimal starter kit for learning and experimenting with:
