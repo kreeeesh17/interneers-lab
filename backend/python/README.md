@@ -456,10 +456,6 @@ This runs automatically — no manual step needed. The process is idempotent: al
 
 # Week 5 - Interactive Data Tools
 
-## Overview
-
-This week focuses on building a Streamlit dashboard and using Jupyter Notebook for data exploration.
-
 ## Features
 
 - Display inventory in a table format using Streamlit
