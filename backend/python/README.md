@@ -471,7 +471,7 @@ This runs automatically — no manual step needed. The process is idempotent: al
 
 ---
 
-# Interneers Lab - Backend in Python
+<!-- # Interneers Lab - Backend in Python
 
 Welcome to the **Interneers Lab 2026** Python backend! This serves as a minimal starter kit for learning and experimenting with:
 
@@ -944,4 +944,4 @@ docker compose logs -f                       # View logs
 
 ```
 
-```
+``` -->
