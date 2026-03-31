@@ -471,6 +471,44 @@ This runs automatically — no manual step needed. The process is idempotent: al
 
 ---
 
+# Week 6 - Structured LLM Output — Validation & JSON with Pydantic
+
+LLMs return plain text. Even when asked for JSON, they can produce malformed output, include markdown fences, omit fields, use wrong types, or return the wrong number of items. Without validation, this silently breaks your application.
+
+---
+
+## Pydantic Schemas
+
+Pydantic schemas define the exact shape and constraints data must meet — field types, min/max lengths, numeric ranges, and optional vs required fields. If the LLM response doesn't match, a `ValidationError` is raised immediately and nothing bad reaches the database.
+
+---
+
+## Two Layers of Enforcement
+
+**Prompt level** — the prompt shows the exact JSON structure, uses concrete numeric examples, forbids markdown, and states field rules explicitly.
+
+**API level** — Gemini's `response_mime_type` and `response_schema` config options constrain the model's output at generation time, before it even reaches your code.
+
+Both layers together are more reliable than either one alone.
+
+---
+
+## Parse → Validate → Save
+
+1. `model_validate_json()` parses the raw response text and validates all fields in one step.
+2. Defensive checks (`.strip()`, range checks) catch edge cases that Pydantic technically allows but would produce bad data in the database.
+3. `model_dump()` converts validated Pydantic objects back to plain Python dicts for JSON export or database saving.
+
+---
+
+## Flow
+
+```
+Prompt → Gemini API → Raw JSON → model_validate_json() → Defensive checks → MongoDB / JSON file
+```
+
+---
+
 <!-- # Interneers Lab - Backend in Python
 
 Welcome to the **Interneers Lab 2026** Python backend! This serves as a minimal starter kit for learning and experimenting with:
