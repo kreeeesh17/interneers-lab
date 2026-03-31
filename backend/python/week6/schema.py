@@ -7,7 +7,7 @@ class ProductSchema(BaseModel):
     description: Annotated[str, Field(min_length=1, max_length=500)]
     category: Annotated[str, Field(min_length=1, max_length=100)]
     brand: Annotated[str, Field(min_length=1, max_length=100)]
-    price: Annotated[float, Field(gt=0)]
+    price: Annotated[float, Field(ge=0.01)]
     quantity: Annotated[int, Field(ge=0)]
 
 

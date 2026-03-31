@@ -37,13 +37,13 @@ def run_prompt(temperature):
     # metadata : data about data
     usage = response.usage_metadata
     # number of tokens in input prompt
-    prompt_tokens = usage.prompt_token_count
+    prompt_tokens = getattr(usage, "prompt_token_count", 0)
     # total tokens used in whole request
-    total_tokens = usage.total_token_count
+    total_tokens = getattr(usage, "total_token_count", 0)
     # number of tokens in visible response text
-    candidate_tokens = usage.candidates_token_count
+    candidate_tokens = getattr(usage, "candidates_token_count", 0)
     # number of tokens used in thinking and internal reasoning
-    thoughts_tokens = usage.thoughts_token_count
+    thoughts_tokens = getattr(usage, "thoughts_token_count", 0)
     print("\nTOKEN USAGE:")
     print("Prompt tokens:", prompt_tokens)
     print("Candidate tokens:", candidate_tokens)
@@ -60,7 +60,7 @@ def run_prompt(temperature):
 
 # temperature controls randomness in token selection
 # low temperature => less randomness => more stable outcomes
-run_prompt(0)
+run_prompt(0.0)
 run_prompt(0.5)
 run_prompt(1)
 run_prompt(1.5)
