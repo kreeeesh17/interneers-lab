@@ -118,8 +118,7 @@ def save_ai_products(validated_data):
             brand=brand,
             quantity=int(quantity),
             category=category_obj,
-        )
-        product.save()
+        ).save()
         saved_count += 1
 
     return saved_count, skipped_count
@@ -223,7 +222,6 @@ Rules:
 
 # creating sidebar category filter
 
-
 st.sidebar.header("Filter Inventory")
 
 all_category = get_all_categories()
@@ -241,7 +239,6 @@ selected_category_id = category_options[selected_category_title]
 
 # showing inventory table for current id
 
-
 @st.fragment
 def inventory_table(category_id):
     st.subheader("Current Inventory")
@@ -254,6 +251,7 @@ def inventory_table(category_id):
 
 
 # showing stock alert
+
 @st.fragment
 def stock_alert(df):
     st.subheader("Stock Alert")
@@ -274,6 +272,7 @@ def stock_alert(df):
 
 
 # adding product
+
 @st.fragment
 def add_product(categories):
     st.subheader("Add Product")
@@ -289,8 +288,11 @@ def add_product(categories):
         new_brand = st.text_input("Brand")
         new_quantity = st.number_input(
             "Quantity", min_value=0, step=1)
-        new_category_title = st.selectbox("Category", category_title if category_title else [
-            "No categories found "])
+        if category_title:
+            new_category_title = st.selectbox("Category", category_title)
+        else:
+            new_category_title = None
+            st.warning("No categories found. Please create a category first.")
         submitted = st.form_submit_button("Add Product")
 
     if submitted:
@@ -308,10 +310,10 @@ def add_product(categories):
             Product(name=new_name, description=new_description,
                     price=Decimal(str(new_price)), brand=new_brand, quantity=int(new_quantity), category=selected_category).save()
             st.success(f"Product '{new_name}' added successfully")
-            st.rerun()
 
 
 # removing product
+
 @st.fragment
 def remove_product():
     st.subheader("Remove Product")
@@ -328,12 +330,12 @@ def remove_product():
             selected_product_id = product_options[selected_product_label]
             Product.objects(id=selected_product_id).delete()
             st.success("Product removed successfully")
-            st.rerun()
     else:
         st.info("No products found")
 
 
 # AI generator
+
 @st.fragment
 def ai_scenario_generator():
     st.subheader("Week 6 Advanced: AI Scenario Generator")
@@ -348,48 +350,52 @@ def ai_scenario_generator():
     ]
 
     selected_scenario = st.selectbox("Choose Scenario", scenario_options)
+
     product_count = st.number_input(
-        "How many products to generate?", min_value=1, max_value=50, value=10, step=1)
+        "How many products to generate?",
+        min_value=1,
+        max_value=50,
+        value=10,
+        step=1,
+    )
+
     event_count = st.number_input(
-        "How many future events to generate?", min_value=1, max_value=20, value=5, step=1)
+        "How many future events to generate?",
+        min_value=1,
+        max_value=20,
+        value=5,
+        step=1,
+    )
 
     col1, col2 = st.columns(2)
 
     with col1:
         if st.button("Generate AI Products"):
-            try:
-                validated_products, raw_json = generate_products_from_ai(
-                    product_count=product_count,
-                    theme=selected_scenario,
-                )
+            validated_products, raw_product_json = generate_products_from_ai(
+                product_count=product_count,
+                theme=selected_scenario,
+            )
 
-                saved_count, skipped_count = save_ai_products(
-                    validated_products)
+            saved_count, skipped_count = save_ai_products(validated_products)
 
-                st.success(f"{saved_count} AI products saved successfully")
-                if skipped_count > 0:
-                    st.warning(f"{skipped_count} products were skipped")
+            st.success(f"{saved_count} AI products saved successfully")
 
-                st.text_area("Generated Product JSON", raw_json, height=300)
-                st.rerun()
+            if skipped_count > 0:
+                st.warning(f"{skipped_count} products were skipped")
 
-            except Exception as error:
-                st.error(f"Error while generating products: {error}")
+            st.text_area("Generated Product JSON",
+                         raw_product_json, height=300)
 
     with col2:
         if st.button("Generate Future Events"):
-            try:
-                validated_events, raw_json = generate_future_events(
-                    event_count=event_count,
-                    theme=selected_scenario,
-                )
+            validated_events, raw_event_json = generate_future_events(
+                event_count=event_count,
+                theme=selected_scenario,
+            )
 
-                st.success(
-                    f"{len(validated_events.events)} future events generated successfully")
-                st.text_area("Generated Event JSON", raw_json, height=300)
-
-            except Exception as error:
-                st.error(f"Error while generating events: {error}")
+            st.success(
+                f"{len(validated_events.events)} future events generated successfully")
+            st.text_area("Generated Event JSON", raw_event_json, height=300)
 
 
 df = inventory_table(selected_category_id)
