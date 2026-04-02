@@ -50,10 +50,26 @@ def hit_at_k(retrieved_names, relevant_names, k):
     return 0.0
 
 
+# total irrelevant found/ actual irrelevant
+def fallout_at_k(retrieved_names, irrelevant_names, k):
+    if not irrelevant_names:
+        return 0.0
+
+    top_k_names = retrieved_names[:k]
+    irrelevant_found = 0
+
+    for name in top_k_names:
+        if name in irrelevant_names:
+            irrelevant_found += 1
+
+    return irrelevant_found / len(irrelevant_names)
+
+
 def evaluate_semantic_search(top_k=5, model_name="all-MiniLM-L6-v2"):
     all_precisions = []
     all_recalls = []
     all_hits = []
+    all_fallouts = []
 
     print("\nSemantic Search Evaluation")
     print("=" * 50)
@@ -84,10 +100,12 @@ def evaluate_semantic_search(top_k=5, model_name="all-MiniLM-L6-v2"):
         p_at_k = precision_at_k(retrieved_names, relevant_products, top_k)
         r_at_k = recall_at_k(retrieved_names, relevant_products, top_k)
         h_at_k = hit_at_k(retrieved_names, relevant_products, top_k)
+        f_at_k = fallout_at_k(retrieved_names, irrelevant_products, top_k)
 
         all_precisions.append(p_at_k)
         all_recalls.append(r_at_k)
         all_hits.append(h_at_k)
+        all_fallouts.append(f_at_k)
 
         print(f"\nTest Case {case_number}")
         print("-" * 50)
@@ -108,10 +126,12 @@ def evaluate_semantic_search(top_k=5, model_name="all-MiniLM-L6-v2"):
         print(f"Precision: {p_at_k:.4f}")
         print(f"Recall   : {r_at_k:.4f}")
         print(f"Hit      : {h_at_k:.4f}")
+        print(f"Fallout      : {f_at_k:.4f}")
 
     avg_precision = 0.0
     avg_recall = 0.0
     avg_hit = 0.0
+    avg_fallout = 0.0
 
     if all_precisions:
         avg_precision = sum(all_precisions) / len(all_precisions)
@@ -122,11 +142,15 @@ def evaluate_semantic_search(top_k=5, model_name="all-MiniLM-L6-v2"):
     if all_hits:
         avg_hit = sum(all_hits) / len(all_hits)
 
+    if all_fallouts:
+        avg_fallout = sum(all_fallouts) / len(all_fallouts)
+
     print("\nOverall Summary")
     print("=" * 50)
     print(f"Average Precision: {avg_precision:.4f}")
     print(f"Average Recall   : {avg_recall:.4f}")
     print(f"Average Hit      : {avg_hit:.4f}")
+    print(f"Average Fallout  : {avg_fallout:.4f}")
 
 
 if __name__ == "__main__":
@@ -142,56 +166,59 @@ if __name__ == "__main__":
 # == == == == == == == == == == == == == == == == == == == == == == == == ==
 # Test Case 1
 # --------------------------------------------------
-# Query              : construction toys
-# Relevant Products  : ['deluxe city building blocks set', 'interlocking gear system', 'magnetic tile creativity set', 'mini robot construction kit', 'wooden farm animal blocks']
+# Query: construction toys
+# Relevant Products: ['deluxe city building blocks set', 'interlocking gear system', 'magnetic tile creativity set', 'mini robot construction kit', 'wooden farm animal blocks']
 # Irrelevant Products: ['classic family board game', 'giant teddy bear', 'princess royal doll', 'superhero action figure']
-# Top Results        :
-#   1. Geometry Shape Sorter Toy (score=0.4708, category=Early Learning)
-#   2. Mini Robot Construction Kit (score=0.4696, category=building blocks)
-#   3. Lego Castle (score=0.4670, category=building blocks)
-#   4. Kids Soccer Goal Set (score=0.4580, category=outdoor toys)
-#   5. Sand Play Set with Molds (score=0.4563, category=outdoor toys)
+# Top Results:
+#   1. Geometry Shape Sorter Toy(score=0.4708, category=Early Learning)
+#   2. Mini Robot Construction Kit(score=0.4696, category=building blocks)
+#   3. Lego Castle(score=0.4670, category=building blocks)
+#   4. Kids Soccer Goal Set(score=0.4580, category=outdoor toys)
+#   5. Sand Play Set with Molds(score=0.4563, category=outdoor toys)
 # Precision: 0.2000
-# Recall   : 0.2000
-# Hit      : 1.0000
+# Recall: 0.2000
+# Hit: 1.0000
+# Fallout: 0.0000
 
 # Test Case 2
 # --------------------------------------------------
-# Query              : gifts for toddlers
-# Relevant Products  : ['alphabet learning puzzle', 'baby cuddle doll', 'mini animal plush assortment', 'puppy dog plush', 'wooden farm animal blocks']
+# Query: gifts for toddlers
+# Relevant Products: ['alphabet learning puzzle', 'baby cuddle doll', 'mini animal plush assortment', 'puppy dog plush', 'wooden farm animal blocks']
 # Irrelevant Products: ['flying drone with camera', 'galactic warrior action figure', 'high-speed rc race car', 'mystery detective game']
-# Top Results        :
-#   1. Backpack & School Accessories for Dolls (score=0.4935, category=Dolls & Accessories)
-#   2. Mini Animal Plush Assortment (score=0.4768, category=plush toys)
-#   3. Alphabet Learning Puzzle (score=0.4707, category=puzzles)
-#   4. Kids Soccer Goal Set (score=0.4578, category=outdoor toys)
-#   5. Kids First Microscope Kit (score=0.4465, category=educational toys)
+# Top Results:
+#   1. Backpack & School Accessories for Dolls(score=0.4935, category=Dolls & Accessories)
+#   2. Mini Animal Plush Assortment(score=0.4768, category=plush toys)
+#   3. Alphabet Learning Puzzle(score=0.4707, category=puzzles)
+#   4. Kids Soccer Goal Set(score=0.4578, category=outdoor toys)
+#   5. Kids First Microscope Kit(score=0.4465, category=educational toys)
 # Precision: 0.4000
-# Recall   : 0.4000
-# Hit      : 1.0000
+# Recall: 0.4000
+# Hit: 1.0000
+# Fallout: 0.0000
 
 # Test Case 3
 # --------------------------------------------------
-# Query              : pretend play toys
-# Relevant Products  : ['baby cuddle doll', 'doctor play doll set', 'fantasy fairy doll', 'galactic warrior action figure', 'ninja warrior figure', 'princess royal doll', 'space explorer figure', 'starlight princess doll', 'superhero action figure']
+# Query: pretend play toys
+# Relevant Products: ['baby cuddle doll', 'doctor play doll set', 'fantasy fairy doll', 'galactic warrior action figure', 'ninja warrior figure', 'princess royal doll', 'space explorer figure', 'starlight princess doll', 'superhero action figure']
 # Irrelevant Products: ['animal kingdom puzzle (1000 pieces)', 'classic family board game', 'deluxe city building blocks set', 'kids first microscope kit']
-# Top Results        :
-#   1. Teacher Role Play Set (score=0.5873, category=Role Play)
-#   2. Play-Doh School Days Set (score=0.4818, category=Creative Play)
-#   3. Lunchbox & Thermos Pretend Play Set (score=0.4449, category=Role Play)
-#   4. Sand Play Set with Molds (score=0.4253, category=outdoor toys)
-#   5. Doctor Play Doll Set (score=0.4177, category=dolls)
+# Top Results:
+#   1. Teacher Role Play Set(score=0.5873, category=Role Play)
+#   2. Play-Doh School Days Set(score=0.4818, category=Creative Play)
+#   3. Lunchbox & Thermos Pretend Play Set(score=0.4449, category=Role Play)
+#   4. Sand Play Set with Molds(score=0.4253, category=outdoor toys)
+#   5. Doctor Play Doll Set(score=0.4177, category=dolls)
 # Precision: 0.2000
-# Recall   : 0.1111
-# Hit      : 1.0000
+# Recall: 0.1111
+# Hit: 1.0000
+# Fallout: 0.0000
 
 # Test Case 4
 # --------------------------------------------------
-# Query              : science and learning toys
-# Relevant Products  : ['chemistry lab set', 'coding robot for kids', 'human anatomy model kit', 'interactive globe with pen', 'kids first microscope kit']
+# Query: science and learning toys
+# Relevant Products: ['chemistry lab set', 'coding robot for kids', 'human anatomy model kit', 'interactive globe with pen', 'kids first microscope kit']
 # Irrelevant Products: ['giant teddy bear', 'princess royal doll', 'superhero action figure', 'water blaster super soaker']
-# Top Results        :
-#   1. Educational Robot Kit (score=0.5905, category=Educational Toys)
+# Top Results:
+#   1. Educational Robot Kit(score=0.5905, category=Educational Toys)
 #   2. Kids' Learning Tablet Toy (score=0.5537, category=Electronic Learning)
 #   3. Science Experiment Lab Kit (score=0.5438, category=Science Kits)
 #   4. Geometry Shape Sorter Toy (score=0.5408, category=Early Learning)
@@ -199,6 +226,7 @@ if __name__ == "__main__":
 # Precision: 0.2000
 # Recall   : 0.2000
 # Hit      : 1.0000
+# Fallout      : 0.0000
 
 # Test Case 5
 # --------------------------------------------------
@@ -214,6 +242,7 @@ if __name__ == "__main__":
 # Precision: 0.6000
 # Recall   : 0.5000
 # Hit      : 1.0000
+# Fallout      : 0.0000
 
 # Test Case 6
 # --------------------------------------------------
@@ -229,6 +258,7 @@ if __name__ == "__main__":
 # Precision: 0.6000
 # Recall   : 0.6000
 # Hit      : 1.0000
+# Fallout      : 0.0000
 
 # Test Case 7
 # --------------------------------------------------
@@ -244,9 +274,11 @@ if __name__ == "__main__":
 # Precision: 1.0000
 # Recall   : 0.5000
 # Hit      : 1.0000
+# Fallout      : 0.0000
 
 # Overall Summary
 # ==================================================
 # Average Precision: 0.4571
 # Average Recall   : 0.3587
 # Average Hit      : 1.0000
+# Average Fallout  : 0.0000
