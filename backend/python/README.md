@@ -509,6 +509,102 @@ Prompt → Gemini API → Raw JSON → model_validate_json() → Defensive check
 
 ---
 
+# Week 7 – Semantic Search & Evaluation
+
+## Overview
+
+This week extends the inventory system with semantic search using embeddings, evaluation metrics, and interactive comparison via Streamlit dashboard.
+
+---
+
+## Key Concepts
+
+### 1. Embeddings (SBERT)
+
+- **Model:** `all-MiniLM-L6-v2`
+- Converts text → vector representation
+- Used for semantic similarity
+
+### 2. Cosine Similarity
+
+Used to measure similarity between:
+
+- Query embedding vs product embeddings
+- Product vs product (for recommendations)
+
+---
+
+## Core Functionalities
+
+### Semantic Search
+
+```
+Query → Embedding → Compare with Product Embeddings → Rank → Top K
+```
+
+Implemented in `semantic_search.py` → `semantic_search()`
+
+### Similar Products _(Advanced Task)_
+
+- Uses product-to-product similarity
+- Triggered via **"Find Similar Products"** button in dashboard
+- `find_similar_products(product_id)`
+
+### Evaluation _(Task 4)_
+
+| Metric          | Formula                         |
+| --------------- | ------------------------------- |
+| **Precision@K** | Relevant / Retrieved            |
+| **Recall@K**    | Relevant Found / Total Relevant |
+| **Hit@K**       | At least one relevant result    |
+| **Fallout@K**   | Irrelevant retrieved            |
+
+### Model Comparison _(Adv Task 2)_
+
+| Model               | Characteristic |
+| ------------------- | -------------- |
+| `all-MiniLM-L6-v2`  | Fast           |
+| `all-mpnet-base-v2` | Better quality |
+
+Evaluated on speed (latency) and result quality (manual inspection).
+
+### Streamlit Dashboard _(Task 5)_
+
+- Keyword Search
+- Semantic Search
+- Side-by-side comparison
+- Similar product recommendations
+
+---
+
+## Important Implementation Details
+
+### LRU Cache
+
+- Used for embedding model loading
+- Avoids repeated model initialization
+
+### Combined Text for Embedding
+
+Each product is converted to:
+
+```
+name + description + brand + category
+```
+
+This improves semantic understanding.
+
+### Unique Keys in Streamlit
+
+Used for widgets and buttons inside loops to prevent duplicate element errors.
+
+```
+keyword_similar_button_16
+semantic_similar_button_16
+```
+
+---
+
 <!-- # Interneers Lab - Backend in Python
 
 Welcome to the **Interneers Lab 2026** Python backend! This serves as a minimal starter kit for learning and experimenting with:
