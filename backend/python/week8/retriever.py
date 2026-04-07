@@ -1,7 +1,9 @@
 from week8.vector_store import search_similar_chunks
 from week8.config import DEFAULT_TOP_K
+from langsmith import traceable
 
 
+@traceable(run_type="retriever", name="week8_retrieve_relevant_chunks")
 def retrieve_relavant_chunks(query, top_k: int = DEFAULT_TOP_K):
     results = search_similar_chunks(query, top_k)
     retrieved_chunks = []

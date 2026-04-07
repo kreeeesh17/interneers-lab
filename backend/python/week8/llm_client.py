@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from google import genai
 from week8.config import GEMINI_MODEL_NAME, GEMINI_TEMPERATURE
+from langsmith import traceable
+
 
 load_dotenv()
 
@@ -23,6 +25,14 @@ def get_gemini_client():
     return genai.Client(api_key=api_key)
 
 
+@traceable(
+    run_type="llm",
+    name="gemini_generate_answer",
+    metadata={
+        "ls_provider": "google_genai",
+        "ls_model_name": GEMINI_MODEL_NAME,
+    },
+)
 def generate_answer(prompt: str) -> str:
     client = get_gemini_client()
 

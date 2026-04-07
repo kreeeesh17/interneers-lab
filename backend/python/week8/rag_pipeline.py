@@ -2,8 +2,13 @@ from week8.prompt_builder import build_rag_prompt
 from week8.retriever import retrieve_relavant_chunks
 from week8.llm_client import generate_answer
 from week8.config import DEFAULT_TOP_K
+from langsmith import traceable
+from week8.langsmith_setup import setup_langsmith_tracing
+
+setup_langsmith_tracing()
 
 
+@traceable(run_type="chain", name="week8_rag_pipeline")
 def run_rag_pipeline(user_query, top_k: int = DEFAULT_TOP_K):
     retrieved_chunks = retrieve_relavant_chunks(user_query, top_k=top_k)
     prompt = build_rag_prompt(user_query, retrieved_chunks)
