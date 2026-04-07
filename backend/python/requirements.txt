@@ -10,3 +10,10 @@ mongoengine
 python-dotenv
 google-genai
 pydantic
+langchain
+langchain-core
+langchain-community
+langchain-text-splitters
+langchain-chroma
+langsmith
+chromadb
