@@ -605,6 +605,48 @@ semantic_similar_button_16
 
 ---
 
+# Week 8 — RAG Powered Inventory Expert
+
+A **Retrieval-Augmented Generation (RAG)** system built on top of the existing inventory project. Ask natural language questions and get grounded answers backed by real documents and live stock data.
+
+## How It Works
+
+1. Loads knowledge files (Product Manual, Return Policy, Vendor FAQ)
+2. Splits them into chunks using **LangChain**
+3. Stores embeddings in **ChromaDB**
+4. Retrieves the most relevant chunks for a user query
+5. Sends grounded context to **Gemini**
+6. Returns an answer based only on retrieved documents
+7. Optionally combines the answer with live stock data from **MongoDB**
+8. Supports **LangSmith tracing** for observability
+
+## Project Structure
+
+```
+week8/
+├── config.py               # Central settings
+├── knowledge_base.py       # Loads text documents
+├── text_chunker.py         # Splits documents into chunks
+├── vector_store.py         # ChromaDB indexing and search
+├── ingest_documents.py     # Runs the full ingestion pipeline
+├── retriever.py            # Retrieves relevant chunks
+├── prompt_builder.py       # Builds grounded prompt
+├── llm_client.py           # Calls Gemini
+├── rag_pipeline.py         # End-to-end RAG flow
+├── stock_lookup.py         # Fetches stock data from MongoDB
+├── ask_expert_service.py   # Combines RAG + stock lookup
+├── eval_retrieval.py       # Evaluates retrieval quality
+├── eval_rag.py             # Evaluates final RAG answers
+├── langsmith_setup.py      # Enables LangSmith tracing
+├── dashboard.py            # Streamlit UI
+└── knowledge/
+    ├── product_manual.txt
+    ├── return_policy.txt
+    └── vendor_faq.txt
+```
+
+---
+
 <!-- # Interneers Lab - Backend in Python
 
 Welcome to the **Interneers Lab 2026** Python backend! This serves as a minimal starter kit for learning and experimenting with:
