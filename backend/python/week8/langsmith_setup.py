@@ -1,3 +1,4 @@
+# this prepares the env so that week8 can send traces to LangSmith
 import os
 from dotenv import load_dotenv
 from week8.config import TRACING_PROJECT_NAME
