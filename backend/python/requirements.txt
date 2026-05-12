@@ -17,3 +17,4 @@ langchain-text-splitters
 langchain-chroma
 langsmith
 chromadb
+langchain-google-genai
