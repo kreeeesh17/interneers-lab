@@ -3,7 +3,7 @@
 
 from langchain_classic.agents import AgentExecutor, create_tool_calling_agent
 from langchain_core.prompts import ChatPromptTemplate
-from week8.langsmith_setup import setup_langsmith_tracing
+from week9_10.langsimth_setup import setup_langsmith_tracing
 from week9_10.config import AGENT_MAX_ITERATIONS
 from week9_10.llm_client import get_chat_model
 from week9_10.tools import (
