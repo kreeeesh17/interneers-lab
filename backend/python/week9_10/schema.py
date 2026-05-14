@@ -6,8 +6,10 @@ from week9_10.config import MAX_DISCOUNT_RATE
 class QuoteInvoiceSchema(BaseModel):
     product_id: int = Field(ge=1)
     product_name: str = Field(min_length=1, max_length=100)
-    quantity: int = Field(ge=1)
     brand: str = Field(min_length=1, max_length=100)
+    requested_quantity: int = Field(ge=1)
+
+    quantity: int = Field(ge=1)
     unit_price: float = Field(gt=0)
     subtotal: float = Field(ge=0)
     discount_rate: float = Field(ge=0.0, le=MAX_DISCOUNT_RATE)

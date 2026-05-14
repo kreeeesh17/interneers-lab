@@ -34,7 +34,7 @@ def product_to_dict(product):
 # LLM sees the user message + tool descriptions
 # LLM outputs: "please call get_product_info with product_id=1" — this is a request, not a result
 # LangChain reads that request and dispatches: get_product_info.invoke({"product_id": 1})
-# LangChain runs the function body — EXACTLY THE SAME AS CASE 1
+# LangChain runs the function body — same as case 1
 # product_repository.get(1) actually hits MongoDB
 # Function returns the dict to LangChain
 # LangChain takes the dict and sends it to the LLM in the next API call as a "tool result"
