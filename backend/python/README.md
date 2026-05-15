@@ -647,6 +647,41 @@ week8/
 
 ---
 
+# Week 9/10 — AI Quote Agent
+
+An autonomous LLM agent built on top of the existing inventory project. Customers describe what they want in natural language, and the agent identifies the product, checks stock, applies tiered discounts within a strict policy cap, and returns a structured Quote Invoice.
+
+## How It Works
+
+1. Receives a natural language quote request (e.g. _"I need 60 building blocks for a school project"_)
+2. Uses **LangChain** to orchestrate a tool-calling agent backed by **Gemini**
+3. The agent identifies the product via **semantic search** (reused from Week 7)
+4. Checks current stock level from **MongoDB**
+5. Caps the quoted quantity at available stock if the request exceeds it
+6. Applies a **tiered discount** (0% / 5% / 10% / 15%) based on quantity
+7. Enforces a hard **20% policy cap** on any discount (deterministic Python guard)
+8. Produces both a customer-facing answer and a validated **JSON Quote Invoice** (Pydantic)
+9. Supports **LangSmith tracing** for full observability of every agent run
+10. Includes an automated eval suite covering simple and complex scenarios
+
+## Project Structure
+
+```
+week9_10/
+├── config.py            # Central settings (model, discount tiers, policy cap)
+├── schema.py            # QuoteInvoiceSchema - Pydantic model + validation
+├── policy.py            # Discount cap enforcement
+├── llm_client.py        # ChatGoogleGenerativeAI wrapper
+├── tools.py             # The four @tool functions the agent can call
+├── agent.py             # LangChain AgentExecutor + system prompt
+├── service.py           # Cleanup layer + structured invoice builder
+├── eval_agent.py        # Rate-limit-aware test suite
+├── tool_tests.ipynb     # Jupyter notebook testing each tool in isolation
+└── langsmith_setup.py   # Enables LangSmith tracing
+```
+
+---
+
 <!-- # Interneers Lab - Backend in Python
 
 Welcome to the **Interneers Lab 2026** Python backend! This serves as a minimal starter kit for learning and experimenting with:
